@@ -1,0 +1,19 @@
+.form{
+  display: flex;
+  flex-direction: column;
+
+  > * {
+    margin-bottom: $m-size;
+  }
+
+  // @media (min-width: $desktop-breakpoint){
+  //   flex-direction: row;
+  // }
+
+  &__error{
+    margin: 0 0 $m-size 0;
+    font-style: italic;
+
+  }
+}
+

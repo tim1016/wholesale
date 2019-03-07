@@ -1,0 +1,9 @@
+node_modules/
+temp/
+*.snap
+*.map
+public/styles.css
+dist/
+.env.test
+.env.development
+package-lock.json
