@@ -1,34 +1,41 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
+
 
 
 export default class FloatingLabelInput extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      className: ''
+      fieldActive: false,
+      inputValue: ''
     };
   }
 
-  handleInput = (e) => {
-    if (e.target.value !== '') {
-      this.setState({ className: 'on' });
-    } else {
-      this.setState({ className: '' });
-    }
 
-    // run
-  }
+  deactivateField = (e) => {
+    if (e.target.value === '') {
+      this.setState({ fieldActive: false });
+    }
+  };
+
+  handleInput = (e) => {
+    this.setState({ inputValue: e.target.value });
+    this.activateField(e);
+    e.preventDefault();
+  };
+
+  activateField = () => { this.setState({ fieldActive: true }); };
 
   render() {
     return (
       <div className="floatingLabelInput">
-        <label className={this.state.className}>{this.props.placeholder}</label>
-        <input 
-        placeholder={this.props.placeholder} 
-        onChange={this.handleInput}
-        // onFocus={this.activateField}
-        // onBlur={this.disableField}
-        // onChange={this.updateInputValue}
+        <label className={this.state.fieldActive ? 'on' : ''}>{this.props.placeholder}</label>
+        <input
+          placeholder={this.props.placeholder}
+          onFocus={this.activateField}
+          onBlur={this.deactivateField}
+          onChange={this.handleInput}
         />
       </div>
     );
