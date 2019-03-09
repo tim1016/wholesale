@@ -1,10 +1,10 @@
 import React from 'react';
-import FloatingLabelInput  from './FloatingLabelInput';
+import InputField  from './InputField';
 
 const DashboardPage = () => (
-  <div class="container-fluid mt-5 bg-light">
+  <div className="container-fluid mt-5 bg-light">
     <div className="container">
-      <FloatingLabelInput placeholder="Enter First Name" />
+      <InputField />
     </div>
   </div>
 );
