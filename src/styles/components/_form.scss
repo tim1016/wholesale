@@ -1,19 +1,61 @@
-.form{
-  display: flex;
-  flex-direction: column;
-
-  > * {
-    margin-bottom: $m-size;
-  }
-
-  // @media (min-width: $desktop-breakpoint){
-  //   flex-direction: row;
-  // }
-
-  &__error{
-    margin: 0 0 $m-size 0;
-    font-style: italic;
-
-  }
+%padding-shared{
+    padding: $xs-size $l-size;
+    // padding: 0.1em 2em;
 }
 
+%fontsizes{
+    font-family: inherit;
+    font-size: 2.8rem;
+}
+
+.form-input{
+    @extend %fontsizes;
+    @extend %padding-shared;
+}
+
+input.animated-input:focus{
+    outline: none;
+    box-shadow: 0 1rem 2rem rgba(black, 0.1);
+    border-bottom: 0.3rem solid $primary;
+}
+
+.form-label{
+    @extend %fontsizes;
+    @extend %padding-shared;
+}
+
+
+.animated-input{
+    width: 100%;
+    margin: 0;
+    border: 1px solid  black;
+    background-color: rgba(black, 0.1);
+    border: none;
+    transition: all 0.3s ease;
+    border-bottom: 0.3rem solid transparent;
+
+    & .error  {
+        border-bottom: 0.3rem solid $danger;
+    } 
+}
+
+.animated-label{
+    @include yAbsCenter;
+    background-color: transparent;
+    margin: 0;
+    transition: all 0.3s;
+    border-radius: 50rem;
+}
+
+
+.animated-inputlabel{
+    position: relative;
+}
+
+.animated-inputlabel  label.infocus {
+    transform: translateY(-150%);
+    border: .2rem solid darken($primary, 10%);
+    background-color: $primary;
+    color: $white;
+    font-size: 80%;
+}

@@ -15,34 +15,3 @@
   @extend .text-input;
   height: 10rem;
 }
-
-
-.floatingLabelInput {
-  
-  display: flex;
-  position: relative;
-  flex-direction: column;
-  // width: 300px;
-  margin-top: 45px;
-  
-  label {
-    
-    position: absolute;
-    top: -20px;
-    left: 0;
-    font-size: 16px;
-    color: blue;
-    transition: all 0.2s linear;
-    opacity: 0;
-    font-weight: bold;
-    
-    &.on {
-    opacity: 1;
-    color: #474747;
-    }
-  }
-  
-  input {
-    font-size: 1.6rem;
-  }
-}
