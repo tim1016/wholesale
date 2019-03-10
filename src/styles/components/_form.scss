@@ -4,6 +4,7 @@ $initial-color: $gray-500;
 $focus-color: $primary;
 $error-color: $danger;
 $success-color: $success;
+$input-background: rgba(black, 0.1);
 
 
 
@@ -38,7 +39,7 @@ $success-color: $success;
 .animated-input{
     width: 100%;
     margin: 0;
-    // background-color: rgba(black, 0.1);
+    background-color: $input-background;
     border: none;
     outline: none;
     transition: all 0.3s ease;
@@ -63,28 +64,41 @@ $success-color: $success;
     @include yAbsCenter;
     background-color: transparent;
     color: $initial-color;
-    // margin: 0;
     transition: all 0.3s;
-    border-radius: 50rem;
-}
 
+    &.transformed{
+        transform: translateY(-135%);
+        font-size: $font-size-sm;
+    }
 
-
-.animated-inputlabel  label.infocus {
-    transform: translateY(-135%);
-    color: $focus-color;
-    font-size: $font-size-sm;
-
+    &.infocus{
+        color: $focus-color;   
+    }
     &.error{
         color: $error-color; 
     }
+    &.success{
+        color: $success-color; 
+    }
 }
 
-.animated-inputlabel  label.success {
-    transform: translateY(-135%) ;
-    color: $success-color;
-    font-size: $font-size-sm;
-}
+
+
+// .animated-label.infocus {
+//     transform: translateY(-135%);
+//     color: $focus-color;
+//     font-size: $font-size-sm;
+
+//     &.error{
+//         color: $error-color; 
+//     }
+// }
+
+// .animated-label.success {
+//     transform: translateY(-135%) ;
+//     color: $success-color;
+//     font-size: $font-size-sm;
+// }
 
 
 .diagnose-field{

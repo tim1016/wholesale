@@ -10,57 +10,68 @@ export default class InputField extends React.Component {
     this.inputClasses = 'form-input animated-input';
 
     this.state = {
-      fieldActive: false,
+      touched: false,
+      isActive: false,
       amount: '',
-      hasError: false
+      hasError: false,
+      required: true
     };
   }
 
-  updateClasses = () => {
-    const { fieldActive, amount, hasError } = this.state;
-    // let labelClasses = this.labelClasses;
-    // let inputClasses = this.inputClasses;
+  toggleCssClass = (flag1, flag2, originalStr, cssClass) => {
+    let str = originalStr;
+    str = (flag1 && !str.includes(cssClass)) ? `${str} ${cssClass}` : str;
+    str = flag2 ? str.replace(` ${cssClass}`, '') : str;
+    return str;
+  }
 
+  updateClasses = () => {
+    const { touched, isActive, amount, hasError } = this.state;
     let { labelClasses, inputClasses } = this;
 
-    labelClasses = ((fieldActive && !labelClasses.includes('infocus')) ? `${labelClasses} infocus` : labelClasses.replace(' infocus', ''));
-    labelClasses = ((hasError && !labelClasses.includes('error')) ? `${labelClasses} error` : labelClasses.replace(' error', ''));
-    labelClasses = (!hasError && !fieldActive && amount !== '' && !labelClasses.includes('success')) ? `${labelClasses} success` : labelClasses;
-    labelClasses = (!hasError && labelClasses.includes('error')) ? labelClasses.replace(' error', '') : labelClasses;
-
-    inputClasses = ((hasError && !inputClasses.includes('error')) ? `${inputClasses} error` : inputClasses.replace(' error', ''));
-    inputClasses = (!hasError && !fieldActive && amount !== '' && !inputClasses.includes('success')) ? `${inputClasses} success` : inputClasses;
-    
-    console.log(!hasError , !fieldActive , amount !== '' , !labelClasses.includes('success') );
-
+    // Once touched label always transformed
+    labelClasses = (touched && !labelClasses.includes('transformed')) ? `${labelClasses} transformed` : labelClasses;
+    // Toggle other label classes
+    labelClasses = this.toggleCssClass(isActive, !isActive, labelClasses, 'infocus');
+    labelClasses = this.toggleCssClass(hasError, !hasError, labelClasses, 'error');
+    let flag1 = (!hasError && validator.isNumeric(amount) && !labelClasses.includes('success'));
+    let flag2 = hasError;
+    labelClasses = this.toggleCssClass(flag1, flag2, labelClasses, 'success');
+    // Input Classes
+    inputClasses = this.toggleCssClass(hasError, !hasError, inputClasses, 'error');
+    flag1 = (!hasError && validator.isNumeric(amount) && !inputClasses.includes('success'));
+    flag2 = hasError;
+    inputClasses = this.toggleCssClass(flag1, flag2, inputClasses, 'success');
     this.labelClasses = labelClasses;
     this.inputClasses = inputClasses;
   };
 
-  deactivateField = (e) => {
-    if (!this.state.hasError) {
-      this.setState({ fieldActive: false });
-    }
+  deactivateField = () => {
+    this.setState({ isActive: false });
   };
 
-  handleInput = (e) => {
-    
-    const amount = e.target.value.trim();
-    // console.log('!amount', !amount);
-    // console.log('match', !!amount.match(/^\d{1,}(\.\d{0,2})?$/));
-    // console.log('validator', validator.isNumeric(amount) );
-    // console.log(!amount, amount.match(/^\d{1,}(\.\d{0,2})?$/), validator.isNumeric(amount));
-    if (!amount || amount.match(/^\d{1,}(\.\d{0,2})?$/) || validator.isNumeric(amount)) {
-      this.setState(() => ({ amount, hasError: false  }));
+  onInputChange = (e) => {
+    e.preventDefault();
+    const currentValue = e.target.value.trim();
+    const isValid = this.validateInput(currentValue);
+    if (isValid) {
+      this.setState(() => ({ amount: currentValue, hasError: false }));
     } else {
       this.setState({ hasError: true });
     }
-    // this.updateClasses();
-    this.activateField(e);
-    e.preventDefault();
+  }
+
+  validateInput = (currentValue) => {    
+    const { touched, isActive, required } = this.state;
+    let isValid = false;
+    isValid = validator.isNumeric(currentValue);
+    if (currentValue === '' && touched && isActive && !required) {
+      isValid = true;
+    }
+    return isValid;
   };
 
-  activateField = () => { this.setState({ fieldActive: true }); this.updateClasses(); };
+  activateField = () => { this.setState({ isActive: true, touched: true }); };
 
   render() {
     this.updateClasses();
@@ -77,7 +88,7 @@ export default class InputField extends React.Component {
             // value={this.state.amount}
             onFocus={this.activateField}
             onBlur={this.deactivateField}
-            onChange={this.handleInput}
+            onChange={this.onInputChange}
           />
           <label
             className={this.labelClasses}
