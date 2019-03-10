@@ -1,5 +1,30 @@
 .svgicon{
-    fill: $blue;
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 1em;
+    height: 1em;
+    stroke-width: 10px;
+
+    &--primary{
+        fill: $primary;
+    }
+    &--secondary{
+        fill: $secondary;
+    }
+    &--light{
+        fill: $light;
+    }
+    &--dark{
+        fill: $dark;
+    }
+    &--info{
+        fill: $info;
+    }
+    &--warning{
+        fill: $warning;
+    }
+    &--success{
+        fill: $success;
+    }
+    &--danger{
+        fill: $danger;
+    }
 }

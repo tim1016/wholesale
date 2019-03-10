@@ -1,11 +1,20 @@
+$borderWidth2: $border-width *2 ;
+
+$initial-color: $gray-500;
+$focus-color: $primary;
+$error-color: $danger;
+$success-color: $success;
+
+
+
 %padding-shared{
-    padding: $xs-size $l-size;
+    padding: $input-btn-padding-x-lg $input-btn-padding-x $input-btn-padding-y $input-btn-padding-x-sm;
     // padding: 0.1em 2em;
 }
 
 %fontsizes{
     font-family: inherit;
-    font-size: 2.8rem;
+    font-size: $font-size-lg;
 }
 
 .form-input{
@@ -13,58 +22,86 @@
     @extend %padding-shared;
 }
 
-input.animated-input:focus{
-    outline: none;
-    box-shadow: 0 1rem 2rem rgba(black, 0.1);
-    border-bottom: 0.3rem solid $primary;
+.animated-inputlabel{
+    position: relative;
 }
 
-input.animated-input.error:focus{
-    outline: none;
-    box-shadow: 0 1rem 2rem rgba(black, 0.1);
-    border-bottom: 0.3rem solid $danger;
-}
 
 .form-label{
     @extend %fontsizes;
     @extend %padding-shared;
+    margin-top: $input-btn-padding-x-lg - $input-btn-padding-y;
+    padding-top: $input-btn-padding-y;
 }
 
 
 .animated-input{
     width: 100%;
     margin: 0;
-    border: 1px solid  black;
-    background-color: rgba(black, 0.1);
+    // background-color: rgba(black, 0.1);
     border: none;
+    outline: none;
     transition: all 0.3s ease;
-    border-bottom: 0.3rem solid transparent;
+    border-bottom: $borderWidth2 solid $initial-color;
 
+    &:focus{
+        box-shadow: 0 1rem 2rem rgba(black, 0.1);
+        border-bottom: $borderWidth2 solid $focus-color;
+    }
+
+    &.error{
+        border-bottom: $borderWidth2 solid $error-color;
+    }
+
+    &.success{
+        border-bottom: $borderWidth2 solid $success-color;
+    }
 
 }
 
 .animated-label{
     @include yAbsCenter;
     background-color: transparent;
-    margin: 0;
+    color: $initial-color;
+    // margin: 0;
     transition: all 0.3s;
     border-radius: 50rem;
 }
 
 
-.animated-inputlabel{
-    position: relative;
-}
 
 .animated-inputlabel  label.infocus {
-    transform: translateY(-150%);
-    border: .2rem solid darken($primary, 10%);
-    background-color: $primary;
-    color: $white;
-    font-size: 80%;
+    transform: translateY(-135%);
+    color: $focus-color;
+    font-size: $font-size-sm;
 
     &.error{
-        border: .2rem solid darken($danger, 10%);
-        background-color: $danger; 
+        color: $error-color; 
+    }
+}
+
+.animated-inputlabel  label.success {
+    transform: translateY(-135%) ;
+    color: $success-color;
+    font-size: $font-size-sm;
+}
+
+
+.diagnose-field{
+    @extend %padding-shared;
+    opacity: 0;
+    visibility: hidden;
+    font-size: $font-size-sm;
+
+    &--warning{
+        color: $warning;
+    }
+    &--error{
+        color: $error-color;
+    }
+
+    &.active{
+        opacity: 1;
+        visibility: visible;
     }
 }
