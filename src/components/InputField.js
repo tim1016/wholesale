@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-import validator from 'validator';
+import validate from '../utilities/validateInput';
 import Icon from './icons/index';
 
 export default class InputField extends React.Component {
@@ -14,7 +14,8 @@ export default class InputField extends React.Component {
       isActive: false,
       amount: '',
       hasError: false,
-      required: true
+      required: true,
+      inputType: 'number'
     };
   }
 
@@ -26,7 +27,7 @@ export default class InputField extends React.Component {
   }
 
   updateClasses = () => {
-    const { touched, isActive, amount, hasError } = this.state;
+    const { touched, isActive, amount, hasError, inputType } = this.state;
     let { labelClasses, inputClasses } = this;
 
     // Once touched label always transformed
@@ -34,12 +35,12 @@ export default class InputField extends React.Component {
     // Toggle other label classes
     labelClasses = this.toggleCssClass(isActive, !isActive, labelClasses, 'infocus');
     labelClasses = this.toggleCssClass(hasError, !hasError, labelClasses, 'error');
-    let flag1 = (!hasError && validator.isNumeric(amount) && !labelClasses.includes('success'));
+    let flag1 = (!hasError && validate(inputType, amount) && !labelClasses.includes('success'));
     let flag2 = hasError;
     labelClasses = this.toggleCssClass(flag1, flag2, labelClasses, 'success');
     // Input Classes
     inputClasses = this.toggleCssClass(hasError, !hasError, inputClasses, 'error');
-    flag1 = (!hasError && validator.isNumeric(amount) && !inputClasses.includes('success'));
+    flag1 = (!hasError && validate(inputType, amount) && !inputClasses.includes('success'));
     flag2 = hasError;
     inputClasses = this.toggleCssClass(flag1, flag2, inputClasses, 'success');
     this.labelClasses = labelClasses;
@@ -62,9 +63,10 @@ export default class InputField extends React.Component {
   }
 
   validateInput = (currentValue) => {    
-    const { touched, isActive, required } = this.state;
+    const { touched, isActive, required, inputType } = this.state;
     let isValid = false;
-    isValid = validator.isNumeric(currentValue);
+    const coerced = `${currentValue}`;
+    isValid = validate(inputType, coerced);
     if (currentValue === '' && touched && isActive && !required) {
       isValid = true;
     }

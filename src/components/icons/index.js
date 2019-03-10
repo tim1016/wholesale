@@ -164,7 +164,7 @@ const Icon = (props) => {
     case 'Youtube':
       return <Youtube {...props} />;
     default:
-      return;
+      return '';
   }
 };
 
