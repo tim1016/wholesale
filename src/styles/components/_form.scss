@@ -1,12 +1,9 @@
 $borderWidth2: $border-width *2 ;
-
 $initial-color: $gray-500;
 $focus-color: $primary;
 $error-color: $danger;
 $success-color: $success;
 $input-background: rgba(black, 0.1);
-
-
 
 %padding-shared{
     padding: $input-btn-padding-x-lg $input-btn-padding-x $input-btn-padding-y $input-btn-padding-x-sm;
@@ -81,25 +78,6 @@ $input-background: rgba(black, 0.1);
         color: $success-color; 
     }
 }
-
-
-
-// .animated-label.infocus {
-//     transform: translateY(-135%);
-//     color: $focus-color;
-//     font-size: $font-size-sm;
-
-//     &.error{
-//         color: $error-color; 
-//     }
-// }
-
-// .animated-label.success {
-//     transform: translateY(-135%) ;
-//     color: $success-color;
-//     font-size: $font-size-sm;
-// }
-
 
 .diagnose-field{
     @extend %padding-shared;
