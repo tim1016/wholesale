@@ -16,7 +16,8 @@ export default class InputField extends React.Component {
       hasError: false,
       required: true,
       inputType: 'number',
-      name: 'Field'
+      name: 'Field',
+      vary: true
     };
   }
 
@@ -29,8 +30,8 @@ export default class InputField extends React.Component {
 
   updateClasses = () => {
     const {
- touched, isActive, amount, hasError, inputType 
-} = this.state;
+      touched, isActive, amount, hasError, inputType
+    } = this.state;
     let { labelClasses, inputClasses } = this;
 
     // Once touched label always transformed
@@ -69,11 +70,13 @@ export default class InputField extends React.Component {
     } else {
       this.setState({ hasError: true });
     }
-    console.log(this.state.amount);
+    // console.log(this.state.amount);
   };
 
   validateInput = (currentValue) => {
-    const { touched, isActive, required, inputType } = this.state;
+    const {
+      touched, isActive, required, inputType
+    } = this.state;
     let isValid = false;
     const coerced = `${currentValue}`;
     isValid = validate(inputType, coerced);
@@ -86,7 +89,9 @@ export default class InputField extends React.Component {
   activateField = () => { this.setState({ isActive: true, touched: true }); };
 
   render() {
-    const { hasError, required, amount, inputType, name } = this.state;
+    const {
+      hasError, required, touched, amount, inputType, name
+    } = this.state;
     this.updateClasses();
     return (
       <div className="form-fields">
@@ -107,11 +112,16 @@ export default class InputField extends React.Component {
             className={this.labelClasses}
             htmlFor="amount"
           >
-            Email
+            {name}
+            <small>
+              <em>
+                { touched ? '' : ' (required)' }
+              </em>
+            </small>
           </label>
         </div>
         <div className={hasError ? 'diagnose-field active text-danger' : 'diagnose-field'}>
-          <p 
+          <p
             className="m-0 diagnose-field__message"
           >
             { (amount === '' && required) ? `${name} is required.` : `Not a valid ${inputType}` }
