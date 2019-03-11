@@ -15,7 +15,8 @@ export default class InputField extends React.Component {
       amount: '',
       hasError: false,
       required: true,
-      inputType: 'number'
+      inputType: 'number',
+      name: 'Field'
     };
   }
 
@@ -24,10 +25,12 @@ export default class InputField extends React.Component {
     str = (flag1 && !str.includes(cssClass)) ? `${str} ${cssClass}` : str;
     str = flag2 ? str.replace(` ${cssClass}`, '') : str;
     return str;
-  }
+  };
 
   updateClasses = () => {
-    const { touched, isActive, amount, hasError, inputType } = this.state;
+    const {
+ touched, isActive, amount, hasError, inputType 
+} = this.state;
     let { labelClasses, inputClasses } = this;
 
     // Once touched label always transformed
@@ -47,8 +50,14 @@ export default class InputField extends React.Component {
     this.inputClasses = inputClasses;
   };
 
-  deactivateField = () => {
-    this.setState({ isActive: false });
+  deactivateField = (e) => {
+    const currentValue = e.target.value.trim();
+    const isValid = this.validateInput(currentValue);
+    if (isValid) {
+      this.setState(() => ({ amount: currentValue, hasError: false, isActive: false }));
+    } else {
+      this.setState({ hasError: true });
+    }
   };
 
   onInputChange = (e) => {
@@ -60,9 +69,10 @@ export default class InputField extends React.Component {
     } else {
       this.setState({ hasError: true });
     }
-  }
+    console.log(this.state.amount);
+  };
 
-  validateInput = (currentValue) => {    
+  validateInput = (currentValue) => {
     const { touched, isActive, required, inputType } = this.state;
     let isValid = false;
     const coerced = `${currentValue}`;
@@ -76,6 +86,7 @@ export default class InputField extends React.Component {
   activateField = () => { this.setState({ isActive: true, touched: true }); };
 
   render() {
+    const { hasError, required, amount, inputType, name } = this.state;
     this.updateClasses();
     return (
       <div className="form-fields">
@@ -99,8 +110,12 @@ export default class InputField extends React.Component {
             Email
           </label>
         </div>
-        <div className="diagnose-field pt-1 active">
-          <p className="m-0 diagnose-field__message">errors</p>
+        <div className={hasError ? 'diagnose-field active text-danger' : 'diagnose-field'}>
+          <p 
+            className="m-0 diagnose-field__message"
+          >
+            { (amount === '' && required) ? `${name} is required.` : `Not a valid ${inputType}` }
+          </p>
         </div>
       </div>
     );

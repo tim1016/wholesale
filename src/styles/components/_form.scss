@@ -9,30 +9,23 @@ $input-background: rgba(black, 0.1);
     padding: $input-btn-padding-x-lg $input-btn-padding-x $input-btn-padding-y $input-btn-padding-x-sm;
     // padding: 0.1em 2em;
 }
-
 %fontsizes{
     font-family: inherit;
     font-size: $font-size-lg;
 }
-
 .form-input{
     @extend %fontsizes;
     @extend %padding-shared;
 }
-
 .animated-inputlabel{
     position: relative;
 }
-
-
 .form-label{
     @extend %fontsizes;
     @extend %padding-shared;
     margin-top: $input-btn-padding-x-lg - $input-btn-padding-y;
     padding-top: $input-btn-padding-y;
 }
-
-
 .animated-input{
     width: 100%;
     margin: 0;
@@ -41,22 +34,17 @@ $input-background: rgba(black, 0.1);
     outline: none;
     transition: all 0.3s ease;
     border-bottom: $borderWidth2 solid $initial-color;
-
     &:focus{
         box-shadow: 0 1rem 2rem rgba(black, 0.1);
         border-bottom: $borderWidth2 solid $focus-color;
     }
-
     &.error{
         border-bottom: $borderWidth2 solid $error-color;
     }
-
     &.success{
         border-bottom: $borderWidth2 solid $success-color;
     }
-
 }
-
 .animated-label{
     @include yAbsCenter;
     background-color: transparent;
@@ -65,7 +53,8 @@ $input-background: rgba(black, 0.1);
 
     &.transformed{
         transform: translateY(-135%);
-        font-size: $font-size-sm;
+        font-size: $font-size-sm; 
+        font-weight: bold;
     }
 
     &.infocus{
@@ -78,12 +67,13 @@ $input-background: rgba(black, 0.1);
         color: $success-color; 
     }
 }
-
 .diagnose-field{
     @extend %padding-shared;
+    padding-top: 0.2rem; 
     opacity: 0;
     visibility: hidden;
     font-size: $font-size-sm;
+    transition: $transition-base;
 
     &--warning{
         color: $warning;
@@ -91,7 +81,6 @@ $input-background: rgba(black, 0.1);
     &--error{
         color: $error-color;
     }
-
     &.active{
         opacity: 1;
         visibility: visible;
