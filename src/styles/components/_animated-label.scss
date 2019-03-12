@@ -3,19 +3,59 @@ $initial-color: $gray-500;
 $focus-color: $primary;
 $error-color: $danger;
 $success-color: $success;
-$input-background: rgba(black, 0.1);
+$input-background: transparent; //rgba(black, 0.1);
+
+$icon-padding-y : calc(#{$input-btn-padding-x-lg} + #{$input-btn-padding-y}) / 2 ;
+
+
+.vary-button{
+    padding: auto 1.5rem;  
+    border: none;
+    outline: none;
+    background-color: inherit;
+    border: $borderWidth2 solid $initial-color;
+    &:focus{
+        outline:none;
+    }
+
+    &.infocus{
+        // box-shadow: 0 1rem 2rem rgba(black, 0.1);
+        border: $borderWidth2 solid $focus-color;
+        
+    }
+    &.error{
+        border: $borderWidth2 solid $error-color;
+        
+    }
+    &.success{
+        border: $borderWidth2 solid $success-color;
+        
+    }
+
+    &.leftButton{
+        border-right: none;
+        border-radius: 10% 0% 0% 10%;
+    }
+
+    &.rightButton{
+        border-left: none;
+        border-radius: 0% 10% 10% 0%;
+    }
+}
 
 %padding-shared{
     padding: $input-btn-padding-x-lg $input-btn-padding-x $input-btn-padding-y $input-btn-padding-x-sm;
-    // padding: 0.1em 2em;
 }
 %fontsizes{
     font-family: inherit;
     font-size: $font-size-lg;
 }
+
+
 .form-input{
     @extend %fontsizes;
     @extend %padding-shared;
+    text-align: center;
 }
 .animated-inputlabel{
     position: relative;
@@ -34,37 +74,48 @@ $input-background: rgba(black, 0.1);
     outline: none;
     transition: all 0.3s ease;
     border-bottom: $borderWidth2 solid $initial-color;
+    border-top: $borderWidth2 solid $initial-color;
     &:focus{
-        box-shadow: 0 1rem 2rem rgba(black, 0.1);
+        // box-shadow: 0 1rem 2rem rgba(black, 0.1);
         border-bottom: $borderWidth2 solid $focus-color;
+        border-top: $borderWidth2 solid $focus-color;
     }
     &.error{
         border-bottom: $borderWidth2 solid $error-color;
+        border-top: $borderWidth2 solid $error-color;
     }
     &.success{
         border-bottom: $borderWidth2 solid $success-color;
+        border-top: $borderWidth2 solid $success-color;
     }
 }
 .animated-label{
-    @include yAbsCenter;
+    @include absCenter;
     background-color: transparent;
     color: $initial-color;
     transition: all 0.3s;
 
     &.transformed{
-        transform: translateY(-135%);
+        top: -20%;
+        background-color: white;
+        border: $borderWidth2 solid $primary;
+        border-radius: 10%;
+        padding: 0.1rem 0.3rem;
         font-size: $font-size-sm; 
         font-weight: bold;
     }
 
     &.infocus{
         color: $focus-color;   
+        border-color: $focus-color;   
     }
     &.error{
         color: $error-color; 
+        border-color: $error-color;  
     }
     &.success{
         color: $success-color; 
+        border-color: $success-color;  
     }
 }
 .diagnose-field{

@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/label-has-for */
 /* eslint-disable react/prop-types */
 import React from 'react';
 import validate from '../utilities/validateInput';
@@ -8,18 +9,40 @@ export default class InputField extends React.Component {
     super(props);
     this.labelClasses = 'form-label animated-label';
     this.inputClasses = 'form-input animated-input';
+    this.buttonClasses = 'vary-button';
+    this.userInput = '';
 
     this.state = {
       touched: false,
       isActive: false,
       amount: '',
+
       hasError: false,
       required: true,
       inputType: 'number',
       name: 'Field',
-      vary: true
+      allowVariation: true,
+      step: 10
     };
   }
+
+  incrementAmount = () => {
+    const { hasError, amount, step } = this.state;
+    if (!hasError) {
+      let number = parseFloat(amount);
+      number += step;
+      this.setState({ amount: number.toString() });
+    }
+  };
+
+  decrementAmount = () => {
+    const { hasError, amount, step } = this.state;
+    if (!hasError) {
+      let number = parseFloat(amount);
+      number -= step;
+      this.setState({ amount: number.toString() });
+    }
+  };
 
   toggleCssClass = (flag1, flag2, originalStr, cssClass) => {
     let str = originalStr;
@@ -32,7 +55,7 @@ export default class InputField extends React.Component {
     const {
       touched, isActive, amount, hasError, inputType
     } = this.state;
-    let { labelClasses, inputClasses } = this;
+    let { labelClasses, inputClasses, buttonClasses } = this;
 
     // Once touched label always transformed
     labelClasses = (touched && !labelClasses.includes('transformed')) ? `${labelClasses} transformed` : labelClasses;
@@ -49,6 +72,15 @@ export default class InputField extends React.Component {
     inputClasses = this.toggleCssClass(flag1, flag2, inputClasses, 'success');
     this.labelClasses = labelClasses;
     this.inputClasses = inputClasses;
+
+    // Vary button
+    buttonClasses = this.toggleCssClass(isActive, !isActive, buttonClasses, 'infocus');
+    buttonClasses = this.toggleCssClass(hasError, !hasError, buttonClasses, 'error');
+    flag1 = (!hasError && validate(inputType, amount) && !buttonClasses.includes('success'));
+    flag2 = hasError;
+    buttonClasses = this.toggleCssClass(flag1, flag2, buttonClasses, 'success');
+    this.labelClasses = labelClasses;
+    this.buttonClasses = buttonClasses;
   };
 
   deactivateField = (e) => {
@@ -63,6 +95,7 @@ export default class InputField extends React.Component {
 
   onInputChange = (e) => {
     e.preventDefault();
+    this.userInput = e.target.value;
     const currentValue = e.target.value.trim();
     const isValid = this.validateInput(currentValue);
     if (isValid) {
@@ -70,7 +103,6 @@ export default class InputField extends React.Component {
     } else {
       this.setState({ hasError: true });
     }
-    // console.log(this.state.amount);
   };
 
   validateInput = (currentValue) => {
@@ -90,42 +122,75 @@ export default class InputField extends React.Component {
 
   render() {
     const {
-      hasError, required, touched, amount, inputType, name
+      hasError, required, touched, amount, inputType, name, allowVariation
     } = this.state;
+    window.l = this.state;
+    const disabled = hasError;
     this.updateClasses();
+    // this.buttonClasses = disabled ? `${this.buttonClasses} disabled` : this.buttonClasses;
     return (
-      <div className="form-fields">
-        {/* <Icon name="Add" width={50} height={50} className="svgicon svgicon--success" />
-        <Icon name="Substract" width={50} height={50} className="svgicon svgicon--danger" /> */}
-        <div className="animated-inputlabel">
-          <input
-            className={this.inputClasses}
-            id="amount"
-            type="text"
-            name="amount"
-            // value={this.state.amount}
-            onFocus={this.activateField}
-            onBlur={this.deactivateField}
-            onChange={this.onInputChange}
-          />
-          <label
-            className={this.labelClasses}
-            htmlFor="amount"
-          >
-            {name}
-            <small>
-              <em>
-                { touched ? '' : ' (required)' }
-              </em>
-            </small>
-          </label>
+      <div className="field-container">
+        <div className="inputfield-container text-center">
+          { allowVariation
+            && (
+            <button
+              type="button"
+              disabled={disabled}
+              className={`${this.buttonClasses} leftButton`}
+              onClick={this.decrementAmount}
+            >
+              <Icon name="Substract" width={50} height={50} className="svgicon" />
+            </button>
+            )
+          }
+          <div className="form-fields">
+            <div className="animated-inputlabel">
+              <input
+                className={this.inputClasses}
+                id="amount"
+                type="text"
+                name="amount"
+                value={ (hasError) ? this.userInput : amount}
+                onFocus={this.activateField}
+                onBlur={this.deactivateField}
+                onChange={this.onInputChange}
+              />
+              <label
+                className={this.labelClasses}
+                htmlFor="amount"
+              >
+                {name}
+                <small>
+                  <em>
+                    { touched ? '' : ' (required)' }
+                  </em>
+                </small>
+              </label>
+            </div>
+
+          </div>
+          { allowVariation
+            && (
+            <button
+              type="button"
+              disabled={disabled}
+              className={`${this.buttonClasses} rightButton`}
+              onClick={this.incrementAmount}
+            >
+              <Icon name="Add" width={50} height={50} className="svgicon" />
+            </button>
+            )
+          }
         </div>
-        <div className={hasError ? 'diagnose-field active text-danger' : 'diagnose-field'}>
-          <p
-            className="m-0 diagnose-field__message"
-          >
-            { (amount === '' && required) ? `${name} is required.` : `Not a valid ${inputType}` }
-          </p>
+
+        <div className="helpfield-container">
+          <div className={hasError ? 'diagnose-field active text-danger' : 'diagnose-field'}>
+            <p
+              className="m-0 diagnose-field__message"
+            >
+              { (this.userInput === '' && required) ? `${name} is required.` : `Not a valid ${inputType}` }
+            </p>
+          </div>
         </div>
       </div>
     );

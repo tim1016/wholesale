@@ -1,8 +1,8 @@
 import React from "react";
 
 const SvgAdd = props => (
-  <svg viewBox="0 0 42 42" {...props}>
-    <path d="M42 20H22V0h-2v20H0v2h20v20h2V22h20z" />
+  <svg viewBox="0 0 357 357" {...props}>
+    <path d="M357,204H204v153h-51V204H0v-51h153V0h51v153h153V204z"/>
   </svg>
 );
 
