@@ -150,7 +150,7 @@ export default class InputField extends React.Component {
                 id="amount"
                 type="text"
                 name="amount"
-                value={ (hasError) ? this.userInput : amount}
+                value={(hasError) ? this.userInput : amount}
                 onFocus={this.activateField}
                 onBlur={this.deactivateField}
                 onChange={this.onInputChange}
