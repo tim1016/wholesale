@@ -9,7 +9,7 @@ export default class InputField extends React.Component {
     super(props);
     this.labelClasses = 'form-label animated-label';
     this.inputClasses = 'form-input animated-input';
-    this.buttonClasses = 'vary-button';
+    this.buttonClasses = 'btn vary-button';
     this.userInput = '';
 
     this.state = {
@@ -26,20 +26,16 @@ export default class InputField extends React.Component {
     };
   }
 
-  incrementAmount = () => {
+  varyAmount = (e) => {
+    const type = e.target.closest('Button').name;
     const { hasError, amount, step } = this.state;
     if (!hasError) {
       let number = parseFloat(amount);
-      number += step;
-      this.setState({ amount: number.toString() });
-    }
-  };
-
-  decrementAmount = () => {
-    const { hasError, amount, step } = this.state;
-    if (!hasError) {
-      let number = parseFloat(amount);
-      number -= step;
+      if (type === 'increment') {
+        number += step;
+      } else if (type === 'decrement') {
+        number -= step;
+      }
       this.setState({ amount: number.toString() });
     }
   };
@@ -124,10 +120,10 @@ export default class InputField extends React.Component {
     const {
       hasError, required, touched, amount, inputType, name, allowVariation
     } = this.state;
-    window.l = this.state;
+    window.l = this.state; // remove
     const disabled = hasError;
     this.updateClasses();
-    // this.buttonClasses = disabled ? `${this.buttonClasses} disabled` : this.buttonClasses;
+
     return (
       <div className="field-container">
         <div className="inputfield-container text-center">
@@ -135,11 +131,12 @@ export default class InputField extends React.Component {
             && (
             <button
               type="button"
+              name="decrement"
               disabled={disabled}
-              className={`${this.buttonClasses} leftButton`}
-              onClick={this.decrementAmount}
+              className={`${this.buttonClasses} leftButton pl-1`}
+              onClick={this.varyAmount}
             >
-              <Icon name="Substract" width={50} height={50} className="svgicon" />
+              <Icon name="Substract" width={100} height={100} className={disabled ? 'svgicon invisible' : 'svgicon'} />
             </button>
             )
           }
@@ -173,11 +170,12 @@ export default class InputField extends React.Component {
             && (
             <button
               type="button"
+              name="increment"
               disabled={disabled}
-              className={`${this.buttonClasses} rightButton`}
-              onClick={this.incrementAmount}
+              className={`${this.buttonClasses} rightButton pr-1`}
+              onClick={this.varyAmount}
             >
-              <Icon name="Add" width={50} height={50} className="svgicon" />
+              <Icon name="Add" width={50} height={50} className={disabled ? 'svgicon invisible' : 'svgicon'} />
             </button>
             )
           }

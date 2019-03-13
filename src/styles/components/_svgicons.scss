@@ -1,8 +1,18 @@
 .svgicon{
-    width: 1em;
-    height: 1em;
-    stroke-width: 10px;
-    fill: $primary;
+    width: 2.5rem;
+    height: 2.5rem;
+    fill: currentColor;
+    transition: all .3s ease;
+
+    opacity: 1;
+    visibility: visible;
+    &.invisible{
+        opacity: 0;
+        visibility: hidden;
+    }
+
+
+    
 
     &--primary{
         fill: $primary;
